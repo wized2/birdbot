@@ -1,7 +1,7 @@
 # Copyright (C) 2024, Kurzgesagt Community Devs
 #
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
+# it under the terms of  the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
@@ -451,6 +451,17 @@ def whitelist_member(member: discord.Member, command: commands.Command) -> bool:
 
     cmd_blacklist_db.update_one({"command_name": command.name}, {"$pull": {"blacklisted_users": member.id}})
     return True
+
+
+def is_user_blacklisted_for_command(user_id: int, command_name: str) -> bool:
+    """
+    Check if a user is blacklisted from using a specific command name.
+    Returns True if blacklisted, False otherwise.
+    """
+    cmd = cmd_blacklist_db.find_one({"command_name": command_name})
+    if cmd is None:
+        return False
+    return user_id in cmd.get("blacklisted_users", [])
 
 
 def is_public_channel(channel: discord.TextChannel | discord.Thread) -> bool:
