@@ -105,7 +105,7 @@ class BirdTree(app_commands.CommandTree):
 
         embed = discord.Embed(
             title="Unhandled Exception Alert",
-            description=f"```\nContext: \nguild:{repr(interaction.guild)}\n{repr(interaction.channel)}\n{repr(interaction.user)}\n```",  # f"```py\n{content[2000:].strip()}\n```"
+            description=f"```\nContext: \nguild:{repr(interaction.guild)}\n{repr(interaction.channel)}\n{repr(interaction.user)}\n```",
         )
 
         await channel.send(embed=embed, file=file)
@@ -117,33 +117,23 @@ class BirdTree(app_commands.CommandTree):
         Informs the user of failure and logs code errors.
         """
         if isinstance(error, errors.InternalError):
-            # Inform user of failure ephemerally
-
             embed = error.format_notif_embed(interaction)
             await BirdTree.maybe_responded(interaction, embed=embed, ephemeral=True)
-
             return
 
         elif isinstance(error, app_commands.TransformerError):
-            # Raised when a type annotation fails to convert to its target type.
             user_shown_error = errors.TransformerError(
                 content=f"Failed to convert {error.value} to {error.transformer._error_display_name}. Make sure member/channel/role exists."
             )
-
             embed = user_shown_error.format_notif_embed(interaction)
             await BirdTree.maybe_responded(interaction, embed=embed, ephemeral=True)
-
             return
 
         elif isinstance(error, app_commands.CheckFailure):
             user_shown_error = errors.CheckFailure(content=str(error))
-
             embed = user_shown_error.format_notif_embed(interaction)
             await BirdTree.maybe_responded(interaction, embed=embed, ephemeral=True)
-
             return
-
-        # most cases this will consist of errors thrown by the actual code
 
         if isinstance(interaction.channel, GuildChannel):
             is_in_public_channel = interaction.channel.category_id != Reference.Categories.moderation
@@ -216,16 +206,16 @@ class BirdBot(commands.AutoShardedBot):
         if args.beta:
             prefix = "b!"
             owner_ids = Reference.botdevlist
-            activity = discord.Activity(type=discord.ActivityType.watching, name="for bugs")
+            activity = discord.Activity(type=discord.ActivityType.listening, name="Steve's Voice")
         elif args.alpha:
             prefix = "a!"
             owner_ids = Reference.botdevlist
-            activity = discord.Activity(type=discord.ActivityType.playing, name="imagine being a beta")
+            activity = discord.Activity(type=discord.ActivityType.listening, name="Steve's Voice")
         else:
             prefix = "!"
             owner_ids = Reference.botownerlist
             max_messages = 10000
-            activity = discord.Activity(type=discord.ActivityType.playing, name="World War 3")
+            activity = discord.Activity(type=discord.ActivityType.listening, name="Steve's Voice")
         x = cls(
             loop=loop,
             max_messages=max_messages,
@@ -277,7 +267,6 @@ class BirdBot(commands.AutoShardedBot):
             return
 
         for item in extdir.iterdir():
-            # Ignore some cogs for the test bots.
             if item.stem in ("antiraid", "automod", "giveaway") and (args.beta or args.alpha):
                 logger.debug("Skipping: %s", item.name)
                 continue
@@ -325,10 +314,6 @@ class BirdBot(commands.AutoShardedBot):
         logger.info(f"\tUser: {self.user.name}")
         logger.info(f"\tID  : {self.user.id}")
         logger.info("------")
-
-    """"
-    From here on it's custom functions we can use in cogs.
-    """
 
     def _user(self) -> discord.ClientUser:
         """
