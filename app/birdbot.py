@@ -160,6 +160,28 @@ class BirdTree(app_commands.CommandTree):
         except app_commands.AppCommandError as e:
             await super().on_error(interaction, e)
 
+    async def interaction_check(self, interaction: discord.Interaction) -> bool:
+        """
+        Global check: enforce command blacklisting for slash commands.
+        """
+        if not interaction.command:
+            return True
+
+        command_name = interaction.command.name
+
+        user_id = interaction.user.id
+
+        from app.utils.helper import is_user_blacklisted_for_command
+
+        if is_user_blacklisted_for_command(user_id, command_name):
+            await interaction.response.send_message(
+                "You are blacklisted from using this command.",
+                ephemeral=True
+            )
+            return False
+
+        return True
+
 
 class BirdBot(commands.AutoShardedBot):
     """
@@ -203,7 +225,7 @@ class BirdBot(commands.AutoShardedBot):
             prefix = "!"
             owner_ids = Reference.botownerlist
             max_messages = 10000
-            activity = discord.Activity(type=discord.ActivityType.listening, name="Steve's voice")
+            activity = discord.Activity(type=discord.ActivityType.playing, name="World War 3")
         x = cls(
             loop=loop,
             max_messages=max_messages,
