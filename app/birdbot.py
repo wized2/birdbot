@@ -226,7 +226,7 @@ class BirdBot(commands.AutoShardedBot):
             prefix = "!"
             owner_ids = Reference.botownerlist
             max_messages = 10000
-            activity = discord.Activity(type=discord.ActivityType.listening, name="Steve's Voice")
+            activity = discord.Activity(type=discord.ActivityType.listening, name="Steve's voice")
         x = cls(
             loop=loop,
             max_messages=max_messages,
