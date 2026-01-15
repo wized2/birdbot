@@ -217,11 +217,11 @@ class BirdBot(commands.AutoShardedBot):
         if args.beta:
             prefix = "b!"
             owner_ids = Reference.botdevlist
-            activity = discord.Activity(type=discord.ActivityType.listening, name="Steve's Voice")
+            activity = discord.Activity(type=discord.ActivityType.watching, name="for bugs")
         elif args.alpha:
             prefix = "a!"
             owner_ids = Reference.botdevlist
-            activity = discord.Activity(type=discord.ActivityType.listening, name="Steve's Voice")
+            activity = discord.Activity(type=discord.ActivityType.playing, name="imagine being a beta")
         else:
             prefix = "!"
             owner_ids = Reference.botownerlist
