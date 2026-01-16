@@ -1,7 +1,7 @@
 # Copyright (C) 2024, Kurzgesagt Community Devs
 #
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of  the GNU General Public License as published by
+# it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
@@ -425,7 +425,7 @@ def get_active_staff(bot: discord.Client) -> str:
     return mention_str
 
 
-# This is useless due to slash migration
+# Stores blacklist entry in CommandBlacklist collection (used by global slash enforcement in BirdTree)
 def blacklist_member(bot: commands.AutoShardedBot, member: discord.Member, command: commands.Command):
     """
     Blacklists a member from a command.
@@ -439,7 +439,7 @@ def blacklist_member(bot: commands.AutoShardedBot, member: discord.Member, comma
     cmd_blacklist_db.update_one({"command_name": command.name}, {"$push": {"blacklisted_users": member.id}})
 
 
-# This is useless due to slash migration
+# Removes blacklist entry from CommandBlacklist collection (used by global slash enforcement in BirdTree)
 def whitelist_member(member: discord.Member, command: commands.Command) -> bool:
     """
     Whitelist a member from a command and return True
