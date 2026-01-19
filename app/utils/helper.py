@@ -22,6 +22,7 @@ from collections import deque
 from typing import List, Tuple
 
 import discord
+from discord import app_commands
 from discord.ext import commands
 
 from app.birdbot import BirdBot
@@ -426,7 +427,7 @@ def get_active_staff(bot: discord.Client) -> str:
 
 
 # Stores blacklist entry in CommandBlacklist collection (used by global slash enforcement in BirdTree)
-def blacklist_member(bot: commands.AutoShardedBot, member: discord.Member, command: commands.Command):
+def blacklist_member(bot: commands.AutoShardedBot, member: discord.Member, command: app_commands.Command | app_commands.Group):
     """
     Blacklists a member from a command.
     """
@@ -440,7 +441,7 @@ def blacklist_member(bot: commands.AutoShardedBot, member: discord.Member, comma
 
 
 # Removes blacklist entry from CommandBlacklist collection (used by global slash enforcement in BirdTree)
-def whitelist_member(member: discord.Member, command: commands.Command) -> bool:
+def whitelist_member(member: discord.Member, command: app_commands.Command | app_commands.Group) -> bool:
     """
     Whitelist a member from a command and return True
     If user is not blacklisted return False
